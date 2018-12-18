@@ -31,20 +31,24 @@
           placeholder="Start typing to Search"
           return-object>
         </v-autocomplete>
+        <!-- <v-btn>
+          Reset
+        </v-btn> -->
       </v-flex>
 
-      <v-flex xs12 v-if="user">
+      <v-flex xs12 v-if="user && userRepos && userProfile">
        <v-layout row wrap>
 
-         <v-flex xs5 style="padding:8px">
+         <v-flex xs12 sm5 style="padding:8px">
            <div class="">
              <img :src="user.avatar_url" alt="" style="max-width:100%">
-             <h4 class="display-1">{{user.login}}</h4>
+             <h4 class="display-1">{{userProfile.name}}</h4>
+             <p class="font-weight-black">{{userProfile.login}}</p>
              <p>Since: {{userProfile.created_at}}</p>
            </div>
          </v-flex>
 
-         <v-flex xs7 style="padding:8px">
+         <v-flex xs12 sm7 style="padding:8px">
            <v-layout row wrap>
              <v-flex>
               <h3 class="font-weight-black pb-4">Saved repositorys</h3>
@@ -112,12 +116,12 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     getUserRepos() {
-      axios.get(`https:/api.github.com/users/gretschann/repos`)
+      axios.get(`https:/api.github.com/users/${this.user.login}/repos`)
         .then(repos => {
           this.userRepos = repos.data
         })
 
-      axios.get(`https:/api.github.com/users/gretschann`)
+      axios.get(`https:/api.github.com/users/${this.user.login}`)
         .then(profile => {
           this.userProfile = profile.data
         })
