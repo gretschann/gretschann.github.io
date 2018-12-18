@@ -116,12 +116,12 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     getUserRepos() {
-      axios.get(`https:/api.github.com/users/${this.user.login}/repos`)
+      axios.get(`https://api.github.com/users/${this.user.login}/repos`)
         .then(repos => {
           this.userRepos = repos.data
         })
 
-      axios.get(`https:/api.github.com/users/${this.user.login}`)
+      axios.get(`https://api.github.com/users/${this.user.login}`)
         .then(profile => {
           this.userProfile = profile.data
         })
