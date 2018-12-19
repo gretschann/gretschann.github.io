@@ -7,7 +7,7 @@
       </v-flex>
 
       <!-- START autocomplite -->
-      <v-flex xs-6 lg-4  class="pa-3 mb-3" style="max-width: 450px">
+      <v-flex xs-6 lg-4  class="py-3 mb-3" style="max-width: 450px;padding-left:0">
         <v-autocomplete
           v-model="user"
           :items="users"
