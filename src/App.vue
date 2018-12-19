@@ -1,5 +1,4 @@
 <template lang="html">
-<v-form>
   <v-container fluid>
     <v-layout column wrap>
 
@@ -8,7 +7,7 @@
       </v-flex>
 
       <!-- START autocomplite -->
-      <v-flex xs-6 lg-4  class="pa-3 mb-3" style="background:lightblue">
+      <v-flex xs-6 lg-4  class="pa-3 mb-3" style="max-width: 450px">
         <v-autocomplete
           v-model="user"
           :items="users"
@@ -20,7 +19,8 @@
           item-text="login"
           item-value="login"
           placeholder="Start typing to Search"
-          return-object>
+          return-object
+          box>
         </v-autocomplete>
       </v-flex>
 
@@ -47,7 +47,6 @@
 
     </v-layout>
   </v-container>
-</v-form>
 </template>
 
 <script>
@@ -66,7 +65,8 @@ export default {
       isLoading: false,
       search: null,
       userRepos: null,
-      userProfile: null
+      userProfile: null,
+      error: null
     }
   },
   watch: {
@@ -95,7 +95,7 @@ export default {
           this.users = res.data.items
         })
         .catch(err => {
-          console.log(err)
+          console.log('error', err)
         })
         .finally(() => (this.isLoading = false))
     },
