@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<title>9</title>
+<meta charset="UTF-8" />
+<meta name="robots" content="noindex" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+<style>
+html {
+	background-image: linear-gradient(45deg,#5AAEB9 0,#B2CEA9 100%);
+	font-family: 'Permanent Marker', cursive;
+	box-sizing: border-box;
+	font-size: 1em;
+	height: 100%;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+	background: none;
+	text-align: center;
+	color: white;
+}
+.splashScreen,
+.winner {
+	position: absolute;
+  width: 100%;
+  min-height: 100%;
+  background-image: linear-gradient(45deg,#5AAEB9 0,#B2CEA9 100%);
+	padding: 15% 0;
+}
+h2 {
+	font-size: 3em;
+}
+button {
+	font-family: 'Permanent Marker', cursive;
+	font-size: 2em;
+	padding: 10px;
+	margin: 10px;
+	background: transparent;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+}
+button:hover {
+	color: black;
+	cursor: pointer;
+}
+textarea {
+  margin: 0 1rem 0 1rem;
+  padding: 1rem;
+}
+.hint {
+	padding: 15% 0 0;
+	font-family: sans-serif;
+	font-size: 1.5em;
+}
+.wrapper {}
+.wrapper div {
+  display: inline-block;
+  padding: 10px;
+  margin: 10px;
+  border-bottom: 4px solid white;
+  color: white;
+}
+.hint .wrapper div {
+  color: black;
+}
+input {
+  padding: 10px;
+  margin: 40px 10px;
+  font-size: 1em;
+	font-size: 2em;
+	border-radius: 20px;
+	max-width: 300px;
+	width: 90%;
+}
+
+.blinker {
+	border: 2px solid white;
+	animation: blink 1s infinite;
+	margin-left: 5px;
+}
+
+@keyframes blink {
+	0% {opacity: 0;}
+	50% {opacity: 1;}
+	100% {opacity: 0;}
+}
+.score {
+	color: white;
+  font-size: 2em;
+}
+.winner {
+	display: none;
+}
+
+</style>
+</head>
+<body>
+
+<!-- <h1>Formular mit Fragen</h1> -->
+
+<div class="splashScreen">
+	<h2>Guesss the word <span class="blinker"></span></h2>
+	<button type="submit" class="startgame">Start</button>
+	<p><sup>*</sup> Words are all web related</p>
+</div>
+
+<div class="winner">
+	<h2>You won this game</h2>
+	<button type="submit" class="startNewGame">Start new</button>
+</div>
+
+<div>
+	<div>Your score:</div>
+	<div class="score">0</div>
+</div>
+
+<div class="hint"></div>
+
+<div>
+	<input class="answer" type="text" placeholder="Enter the word">
+</div>
+<div>
+	<button type="submit" class="submit">Check</button>
+  <button type="submit" class="renew">New word</button>
+</div>
+
+<script type="text/javascript">
+  var hint = document.querySelector('.hint');
+  var answer = document.querySelector('.answer');
+  var submitButton = document.querySelector('.submit');
+  var renewButton = document.querySelector('.renew');
+  var result = document.querySelector('.result');
+	var startButton = document.querySelector('.startgame');
+	var splashScreen = document.querySelector('.splashScreen');
+	var scoreCounter = document.querySelector('.score');
+	var winner = document.querySelector('.winner');
+	var startNewGame = document.querySelector('.startNewGame');
+  var wordList = ["chrome", "firefox", "codepen", "javascript", "jquery", "twitter", "github", "wordpress", "opera", "sass", "layout", "standards", "semantic", "designer", "developer", "module", "component", "website", "creative", "banner", "browser", "screen", "mobile", "footer", "header", "typography", "responsive", "programmer", "css", "border", "compass", "grunt", "pixel", "document", "object", "ruby", "modernizr", "bootstrap", "python", "php", "pattern", "ajax", "node", "element", "android", "application", "adobe", "apple", "google", "microsoft", "bookmark", "internet", "icon", "svg", "background", "property", "syntax", "flash", "html", "font", "blog", "network", "server", "content", "database", "socket", "function", "variable", "link", "apache", "query", "proxy", "backbone", "angular", "email", "underscore", "cloud"];
+  var word, score = 0;
+	var winnerScore = 1;
+
+	function init () {
+		enableSplashScreen()
+    generateQuestion();
+    submitButton.addEventListener('click', checkAnswer)
+    renewButton.addEventListener('click', generateQuestion)
+		startNewGame.addEventListener('click', function(){
+			winner.style.display = "none";
+			updateScore(0, true);
+		})
+  }
+
+	function enableSplashScreen() {
+		startButton.addEventListener('click', function() {
+			splashScreen.style.display = "none";
+		})
+	}
+
+  function checkAnswer() {
+		if(answer.value.toLowerCase() === word) {
+			answeredRight()
+		} else {
+			answeredWrong()
+		}
+  }
+
+	function answeredRight() {
+		answer.style.background = 'lightgreen';
+		updateScore(1);
+
+		setTimeout(function(){
+			generateQuestion();
+		}, 3000)
+	}
+
+	/* params:
+		value: if 1 plus one to score, if -1 substract one from score
+		reset: set score to null, start new game
+	*/
+	function updateScore(value, reset) {
+		if(reset){
+			score = 0;
+		}
+		if(value === 1) {
+			score++;
+		} else if(value === -1){
+			score--;
+		}
+		scoreCounter.innerHTML = score
+
+		if(score === winnerScore) {
+			winner.style.display = "block";
+		}
+
+	}
+
+	function answeredWrong() {
+		answer.style.background = 'red';
+		setTimeout(function(){
+			answer.style.background = 'white';
+		}, 1000)
+		updateScore(0);
+	}
+
+  function generateQuestion() {
+		answer.style.background = 'white';
+    word = randomWord();
+		answer.value = "";
+    setupHint(word);
+  }
+
+  function randomWord () {
+    return wordList[ Math.floor(Math.random() * wordList.length)];
+  }
+
+  function setupQuestion (word) {
+    console.log('word', word);
+    var wrap = document.createElement('div');
+    wrap.classList.add("wrapper");
+    for(var i = 0; i < word.length; i++) {
+      var div = document.createElement('div');
+      wrap.appendChild(div)
+      div.innerHTML = "<input type='text' class=''/>";
+    }
+    question.appendChild(wrap)
+    setupHint(word);
+  }
+
+  function setupHint(word) {
+    var scrambledWord = word.split('').sort(function () {
+      var random = Math.random() * 2;
+      if (random < 1) {
+          return 1;
+      } else {
+        return -1
+      }
+    });
+
+    var wrap = document.createElement('div');
+    wrap.classList.add("wrapper");
+    for(var i = 0; i < word.length; i++) {
+      var div = document.createElement('div');
+      wrap.appendChild(div)
+      div.innerHTML = scrambledWord[i];
+    }
+    hint.innerHTML = "";
+    hint.appendChild(wrap);
+  }
+
+  init();
+
+</script>
+
+
+</body>
+</html>
